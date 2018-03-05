@@ -1,0 +1,43 @@
+.hole-screen-holeinfo {
+  padding: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #cfcfd0;  
+}
+
+.hole-screen-number {
+  font-size: 2.4em;
+  font-weight: 700;
+}
+
+.hole-screen-par {
+  font-size: 1.6em;
+  font-weight: 700;
+  color: #747474;  
+}
+
+.hole-screen-par span {
+  padding-right: 6px;
+}
+
+.hole-screen-par input {
+  font-size: 1em;
+  font-weight: 700;  
+  color: #747474;
+  width: 1.5em;
+}
+
+.hole-screen-par input::-webkit-input-placeholder,
+.hole-screen-par input::-moz-placeholder,
+.hole-screen-par input:-ms-input-placeholder,
+.hole-screen-par input:-moz-placeholder, {
+  color: #747474;
+}
+
+.hole-screen-par input::-webkit-outer-spin-button, 
+.hole-screen-par input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    /* margin: 0; <-- Apparently some margin are still there even though it's hidden */
+}

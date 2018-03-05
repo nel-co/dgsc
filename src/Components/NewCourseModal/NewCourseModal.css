@@ -1,0 +1,45 @@
+.modal-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-wrapper {
+  background: #fff;
+  border-radius: 5px;
+  padding: 30px 60px;
+  margin: 0 auto;
+  animation: zoomIn .2s cubic-bezier(.84,.11,0,.98) forwards;
+}
+
+.modal-wrapper input {
+  font-family: 'Dosis', sans-serif;
+  font-weight: 700;
+  font-size: 1.6em;
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 5px;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.modal-wrapper span {
+  text-align: center;
+  font-weight: 700;
+}
+
+@keyframes zoomIn {
+  0% {
+    transform: scale(0);
+  }
+  99% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

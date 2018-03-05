@@ -1,0 +1,44 @@
+.welcome-screen {
+  background: url(home-bg.jpg);
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  color: #1b1e23;
+}
+
+.welcome-wrapper {
+  text-align: center;
+  width: 80%;
+}
+
+.welcome-wrapper img {
+  width: 24%;
+  padding-bottom: 20px;
+}
+
+.welcome-wrapper h1 {
+  font-size: 3.6em;
+  font-weight: 700;
+  padding-bottom: 10px;  
+}
+
+.welcome-wrapper p {
+  font-size: 1.5em;
+  padding-bottom: 10px;
+  letter-spacing: .5px;
+}
+
+.welcome-btn {
+  color: #1b1e23;
+  padding: 20px;
+  text-align: center;
+  border-radius: 30px;
+  border: 2px solid #1b1e23;
+  font-size: 1.6em;
+  font-weight: 700;
+  cursor: pointer;
+}

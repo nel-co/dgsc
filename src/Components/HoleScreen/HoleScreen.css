@@ -1,0 +1,23 @@
+.owl-nav {
+  display: none;
+}
+
+.hole-screen-card {
+  width: 100%;
+  height: 100%;
+}
+
+.hidden {
+  display: none;
+}
+
+.finish-round-btn {
+  position: absolute;
+  right: 0px;
+  top: 30px;
+  font-size: 1.3em;
+  font-weight: 700;
+  color: #a2a2a2;
+  text-decoration: underline;
+  cursor: pointer;
+}

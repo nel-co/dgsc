@@ -1,0 +1,29 @@
+.measure-wrapper {
+  animation: measureUp .2s ease forwards;
+  box-sizing: border-box;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 0px 30px;
+  text-align: center;
+}
+
+.measure-wrapper h1 {
+  font-size: 7em;
+  font-weight: 700;  
+}
+
+.measure-wrapper p {
+  font-size: 1.6em;
+}
+
+@keyframes measureUp {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}

@@ -1,0 +1,38 @@
+.playerlist-row-wrapper {
+  border-bottom: 1px solid #cfcfd0; 
+}
+
+.playerlist-row {
+  display: flex;
+  justify-content: space-between;
+  /* padding: 25px 30px; */
+  font-size: 1.8em;
+  font-weight: 700;
+  border-bottom: 1px solid #cfcfd0; 
+  
+  padding: 0px 30px;
+  align-items: center;
+  height: 25%;  
+}
+
+.playerlist-name span:first-of-type {
+  padding-right: 5px;
+}
+
+.playerlist-score span {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.playerlist-score-button {
+  font-size: 1.2em;
+  cursor: pointer;
+}
+
+.slider-list {
+  min-height: 100%; 
+}
+
+.slider-slide {
+  height: inherit !important;
+}

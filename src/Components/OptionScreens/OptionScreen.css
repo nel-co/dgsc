@@ -1,0 +1,152 @@
+.option-screen {
+  width: 90%;
+  height: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.option-screen h1 {
+  font-size: 2.2em;
+  font-weight: 700;
+  padding-top: 20px;
+}
+
+.player-pick-number {
+  position: absolute;
+  right: 0px;
+  top: 30px;
+  font-size: 1.3em;
+  font-weight: 700;
+  color: #a2a2a2;
+}
+
+.option-wrapper {
+  background: #fff;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  flex: 0 1 66%;
+}
+
+@media screen and (min-height: 732px ) {
+  .option-wrapper {
+    flex: 0 1 70%;
+  }
+}
+
+@media screen and (min-height: 800px ) {
+  .option-wrapper {
+    flex: 0 1 72%;
+  }
+}
+
+.option-single {
+  display: flex;
+  align-items: center;
+  padding: 25px;
+  padding-left: 15px;
+  position: relative;
+  border-bottom: 1px solid #cfcfd0;
+  cursor: pointer;  
+}
+
+.option-select {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  margin-right: 10px;
+  background: #ddddde;
+}
+
+.selected {
+  background: var(--primary-blue);
+}
+
+.option-amount {
+  color: #727375;
+  font-size: 1.1em;
+  font-weight: 700;
+  position: absolute;
+  right: 25px;
+}
+
+.option-name {
+  font-size: 1.9em;
+  font-weight: 700; 
+}
+
+.btn-wrapper {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+}
+
+.option-btn {
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  border-radius: 30px;
+  font-size: 1.6em;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 7px;
+}
+
+.option-btn:first-of-type {
+  margin-bottom: 10px;
+}
+
+.option-btn.primary {
+  background: var(--primary-color);
+}
+
+.option-btn.outline {
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);  
+}
+
+.option-remove {
+  position: absolute;
+  right: 15px;
+  font-weight: 700;
+  color: #a2a2a2;
+}
+
+.option-remove img {
+  width: 15px;
+  height: auto;
+}
+
+.empty-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.empty-wrapper img {
+  width: 200px;
+  height: auto;
+}
+
+.empty-wrapper h1 {
+  font-size: 3.4em;
+  padding: 0px 30px;
+  margin-bottom: 10px;
+}
+
+.empty-wrapper p {
+  font-size: 1.6em;
+  padding: 0px 30px;
+}
+
+.disabled-btn {
+  background: #dadada;
+  color: #ababab;
+}
