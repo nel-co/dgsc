@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import './Measure.css';
 
+const google = window.google;
+
 export default class Measure extends Component {
 
   constructor(props) {
@@ -59,23 +61,34 @@ export default class Measure extends Component {
     }
   }
 
-  calculateDistance = (lat1, lon1, lat2, lon2, unit) => {
+  calculateDistance = (lat1, lng1, lat2, lng2, unit) => {
     this.setState({
       finalDistance: 0
-    })
-    var radlat1 = Math.PI * lat1/180;
-    var radlat2 = Math.PI * lat2/180;
-    var radlon1 = Math.PI * lon1/180;
-    var radlon2 = Math.PI * lon2/180;
-    var theta = lon1-lon2;
-    var radtheta = Math.PI * theta/180;
-    var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-    dist = Math.acos(dist);
-    dist = dist * 180/Math.PI;
-    dist = dist * 60 * 1.1515;
+    });
+    let latLng1 = new google.maps.LatLng({
+      lat: lat1,
+      lng: lng1
+    });
+    let latLng2 = new google.maps.LatLng({
+      lat: lat2,
+      lng: lng2
+    });
+    let distanceM = google.maps.geometry.spherical.computeDistanceBetween (latLng1, latLng2);
+    let distanceF = distanceM * 3.28084;
+    let finalFeet = parseFloat(distanceF.toFixed(1));
+    // var radlat1 = Math.PI * lat1/180;
+    // var radlat2 = Math.PI * lat2/180;
+    // var radlon1 = Math.PI * lon1/180;
+    // var radlon2 = Math.PI * lon2/180;
+    // var theta = lon1-lon2;
+    // var radtheta = Math.PI * theta/180;
+    // var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+    // dist = Math.acos(dist);
+    // dist = dist * 180/Math.PI;
+    // dist = dist * 60 * 1.1515;
     this.setState({
-      finalDistance: Math.round((dist * 5280) * 10) /10
-      // finalDistance: dist * 5280
+      // finalDistance: Math.round((dist * 5280) * 10) /10
+      finalDistance: finalFeet
     }, () => {
       console.log('final distance: ' + `${this.state.finalDistance}ft`)
     })
