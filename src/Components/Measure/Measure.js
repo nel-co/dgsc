@@ -26,19 +26,25 @@ export default class Measure extends Component {
   }
 
   getStartingCoords = () => {
+    const geo_options = {
+      enableHighAccuracy: true
+    };
     if(navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
         this.setState({
           startingLon: position.coords.longitude,
           startingLat: position.coords.latitude
         })
-      });
+      }, null, geo_options);
     } else {
         alert("Sorry, your browser does not support geolocation services.");
     }
   }
 
   getEndingCoords = () => {
+    const geo_options = {
+      enableHighAccuracy: true
+    };
     if(navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
         this.setState({
@@ -47,7 +53,7 @@ export default class Measure extends Component {
 
         })
         this.calculateDistance(this.state.startingLat,this.state.startingLon, this.state.endingLat, this.state.endingLon, 'M');
-      });
+      }, null, geo_options);
     } else {
         alert("Sorry, your browser does not support geolocation services.");
     }
