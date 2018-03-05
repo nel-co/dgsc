@@ -27,3 +27,45 @@
     transform: scale(1);
   }
 }
+
+.ruler {
+  background: #f5eecf;
+  background: #1b1e24;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 15px;  
+}
+
+.line-wrapper {
+  display: flex;
+  flex-direction: column;
+  animation: up 5s linear infinite;
+}
+
+@keyframes up {
+  0% {
+    transform: translateY(-100px);
+  }
+   100% {
+    transform: translateY(10px);
+  }
+}
+
+.line-wrapper > div {
+  background: #4c4c4c;
+  background: #5bcb70;
+  height: 5px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  
+}
+
+.ruler-lg {
+  width: 35%;
+}
+
+.ruler-sm {
+  width: 20%;
+}

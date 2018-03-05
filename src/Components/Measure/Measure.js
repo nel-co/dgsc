@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import './Measure.css';
 
+import MeasureLoading from './MeasureLoading';
+
 const google = window.google;
 
 export default class Measure extends Component {
@@ -76,21 +78,10 @@ export default class Measure extends Component {
     let distanceM = google.maps.geometry.spherical.computeDistanceBetween (latLng1, latLng2);
     let distanceF = distanceM * 3.28084;
     let finalFeet = parseFloat(distanceF.toFixed(1));
-    // var radlat1 = Math.PI * lat1/180;
-    // var radlat2 = Math.PI * lat2/180;
-    // var radlon1 = Math.PI * lon1/180;
-    // var radlon2 = Math.PI * lon2/180;
-    // var theta = lon1-lon2;
-    // var radtheta = Math.PI * theta/180;
-    // var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-    // dist = Math.acos(dist);
-    // dist = dist * 180/Math.PI;
-    // dist = dist * 60 * 1.1515;
     this.setState({
-      // finalDistance: Math.round((dist * 5280) * 10) /10
       finalDistance: finalFeet
     }, () => {
-      console.log('final distance: ' + `${this.state.finalDistance}ft`)
+      console.log(`final distance: ${this.state.finalDistance}ft`)
     })
   }
 
@@ -102,12 +93,21 @@ export default class Measure extends Component {
     }
   }
 
+  RenderLoadingAnim = () => {
+    if(this.state.isMeasuring) {
+      return <MeasureLoading />
+    } else {
+        return <h1>{!this.state.finalDistance ? '0ft' : `${this.state.finalDistance}ft`}</h1>
+    }
+  }
+
   render() {
     const Measure = (
       <div className="option-screen">
         <h1>{this.props.currentGame.course}</h1>
         <div className="option-wrapper measure-wrapper">
-          <h1>{!this.state.finalDistance ? '0ft' : `${this.state.finalDistance}ft`}</h1>
+          {/* <h1>{!this.state.finalDistance ? '0ft' : `${this.state.finalDistance}ft`}</h1> */}
+          {this.RenderLoadingAnim()}
           <p>To finish the measurement, walk to where your disc rests and tap stop.</p>
         </div>
         <div className="btn-wrapper">
