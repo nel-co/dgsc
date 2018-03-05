@@ -54,6 +54,9 @@ export default class Measure extends Component {
   }
 
   calculateDistance = (lat1, lon1, lat2, lon2, unit) => {
+    this.setState({
+      finalDistance: 0
+    })
     var radlat1 = Math.PI * lat1/180;
     var radlat2 = Math.PI * lat2/180;
     var radlon1 = Math.PI * lon1/180;
