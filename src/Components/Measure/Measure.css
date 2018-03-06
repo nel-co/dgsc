@@ -8,6 +8,7 @@
   flex-direction: column;
   padding: 0px 30px;
   text-align: center;
+  position: relative;
 }
 
 .measure-wrapper h1 {
@@ -17,6 +18,14 @@
 
 .measure-wrapper p {
   font-size: 1.6em;
+}
+
+.measure-wrapper span {
+  position: absolute;
+  bottom: 20px;
+  font-size: 1.2em;
+  font-weight: 700;
+  color: #6d6d6d;
 }
 
 @keyframes measureUp {
@@ -68,4 +77,9 @@
 
 .ruler-sm {
   width: 20%;
+}
+
+.small-font {
+  padding-top: 5px;
+  font-size: 1.2em !important;
 }
