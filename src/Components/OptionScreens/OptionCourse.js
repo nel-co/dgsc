@@ -54,7 +54,7 @@ export default class OptionCourse extends Component {
         <div className="option-wrapper empty-wrapper">
           <img src={emptyCourse} alt="No Courses Added" />
           <h1>Which Course?</h1>
-          <p>Courses that you’ve added will appear here. Add one now.</p>
+          <p>Courses that you’ve added will appear here. Give it a try.</p>
         </div>
         <div className="btn-wrapper">
           <div className="option-btn disabled-btn">Start Game</div>

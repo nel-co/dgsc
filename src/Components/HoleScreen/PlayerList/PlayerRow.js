@@ -56,15 +56,74 @@ export default class PlayerRow extends Component {
             this.props.handlePlayerScore(this.state.playerScore, this.props.currentIndex, this.props.index)
       })
     }
-  }  
+  }
+
+  getAvg = (playerScores, holeIndex) => {
+    let par = this.props.currentGame.par;
+    let courseName = this.props.currentGame.course;
+    let scores;
+    let gamesPlayed;
+    let sum = 0;
+
+    for(let i = 0; i < playerScores.length; i++) {
+      if(courseName === playerScores[i].courseName) { // if course match is found
+        scores = playerScores[i].scores;              // set scores to found scores
+        gamesPlayed = scores.length;                  // set games played to length of scores
+      } else {
+        scores = false;
+        gamesPlayed = 0;
+      }
+    }
+
+    if(scores && gamesPlayed > 0) {
+      for(let x = 0; x < scores.length; x++) {
+        sum += scores[x][holeIndex];
+      }
+      let avg = sum / gamesPlayed;
+      return 'Avg: ' + avg.toFixed(2);
+    } else {
+      return 'No Games Played';       
+    }
+  }
+
+  getBest = (playerScores, holeIndex) => {
+    let par = this.props.currentGame.par;
+    let courseName = this.props.currentGame.course;
+    let scores;
+    let best;
+
+    for(let i = 0; i < playerScores.length; i++) {
+      if(courseName === playerScores[i].courseName) {
+        scores = playerScores[i].scores;
+      } else {
+        scores = false;
+      }
+    }
+    if(scores) {
+      let holeArr = scores.map(score => {
+        return score[holeIndex];
+      });
+      best = Math.min(...holeArr)
+      return 'Best: '+ best;
+    } else {
+      return;       
+    }
+  }
 
   render() {
     return (
       <div className="playerlist-row">
+      <div className="playerlist-left">
         <div className="playerlist-name">
           <span>{this.props.playerName}</span>
           <span className="playerlist-total">{this.props.handleRunningTotal(this.props.index)}</span>
-        </div>
+          </div>
+          <div className="playerlist-hole-stats">
+            <span>{this.getAvg(this.props.savedPlayers[this.props.index].prevRounds,this.props.currentIndex)}</span>
+            <span>{this.getBest(this.props.savedPlayers[this.props.index].prevRounds,this.props.currentIndex)}</span>
+          </div>
+      </div>
+
         <div className="playerlist-score">
           <span className="playerlist-score-button" onClick={this.handleScoreDecrease}>-</span>
           <span>{this.props.currentGame.players[this.props.index].score[this.props.currentIndex] || this.props.currentGame.par[this.props.currentIndex]}</span>

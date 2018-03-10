@@ -13,6 +13,7 @@ export default class PlayerList extends Component {
                     playerName={player.name} 
                     score={player.score} 
                     currentGame={this.props.currentGame}
+                    savedPlayers={this.props.savedPlayers}                    
                     handleRunningTotal={this.props.handleRunningTotal}
                     index={index}
                     currentIndex={this.props.currentIndex}

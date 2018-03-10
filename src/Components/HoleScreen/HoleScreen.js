@@ -118,6 +118,7 @@ export default class HoleScreen extends Component {
                         currentGame={this.props.currentGame} 
                         currentHole= {index + 1}
                         currentIndex={index}
+                        savedPlayers={this.props.savedPlayers}
                         handleParChange={this.props.handleParChange}
                         handleRunningTotal={this.handleRunningTotal}
                         handlePlayerScore={this.props.handlePlayerScore}

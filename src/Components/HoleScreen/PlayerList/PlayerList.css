@@ -36,3 +36,14 @@
 .slider-slide {
   height: inherit !important;
 }
+
+.playerlist-hole-stats {
+  padding-top: 3px;
+  font-size: .65em;
+  font-weight: 700;
+  color: #696969;
+}
+
+.playerlist-hole-stats span {
+  padding-right: 5px;
+}

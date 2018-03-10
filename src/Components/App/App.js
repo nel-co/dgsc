@@ -17,7 +17,7 @@ class App extends Component {
       coursePicked: false, // To Display Course Screen
       gameStarted: false,
       playersPlaying: [], // Stores Players Names to show on scorecard
-      savedPlayers: JSON.parse(localStorage.getItem('savedPlayers')) || [], //Saves players names 
+      // savedPlayers: JSON.parse(localStorage.getItem('savedPlayers')) || [], //Saves players names 
       savedCourses: JSON.parse(localStorage.getItem('savedCourses')) || [], // Saves course info
       currentGame: {
         courseName: '',
@@ -29,11 +29,32 @@ class App extends Component {
             score: [] // push score after each slide
           }
         ]
-      }
+      },
+      savedPlayers: JSON.parse(localStorage.getItem('savedPlayers')) || [
+        // {
+        //   playerName: 'Nelson',
+        //   prevRounds: [
+        //     {
+        //       courseName: 'Shoally',
+        //       scores: [
+        //         [3,2,2,2,3,3,2,3],
+        //         [2,2,3,3,3,4,2,3],
+        //         [3,3,3,3,4,3,2,3]
+        //       ]
+        //     },
+        //     {
+        //      courseName: 'upstate',
+        //      scores: [
+        //        [3,2,2,2,3,3,2,3],
+        //        [3,2,3,3,3,4,2,3]
+        //      ]
+        //    },
+        //   ]
+        // }
+      ]
     }
   }
-
-
+  
   // Sets New Game to True
   handleNewGame = () => {
     this.setState({
@@ -59,13 +80,26 @@ class App extends Component {
   saveNewPlayer = () => {
     const playerInput = document.querySelector('input[name="new-player-name"]');
     if(playerInput.value.length > 0) {
-      const newPlayer = playerInput.value.trim();
+      let newPlayer = {};
+      newPlayer.playerName = playerInput.value.trim();
+      newPlayer.prevRounds = [];
       this.setState({
         savedPlayers: [...this.state.savedPlayers, newPlayer],
         addingNewPlayer: false
       }, () => {
           localStorage.setItem('savedPlayers', JSON.stringify(this.state.savedPlayers));
-      })
+      });
+      // set timeout call to select last player
+      setTimeout(() => {
+        this.selectNewPlayer();
+      }, 0);
+    }
+  }
+
+  selectNewPlayer = () => {
+    if(document.querySelector('.option-single')) {
+      const playerList = Array.from(document.querySelectorAll('.option-single'));
+      playerList[playerList.length - 1].childNodes[0].classList.add('selected');
     }
   }
 
@@ -117,7 +151,20 @@ class App extends Component {
           addingNewCourse: false
         }, () => {
           localStorage.setItem('savedCourses', JSON.stringify(this.state.savedCourses));
-        })
+        });
+        setTimeout(() => {
+          this.selectNewCourse();
+        }, 0);
+      }
+    }
+
+    selectNewCourse = () => {
+      if(document.querySelector('.option-single')) {
+        const courseList = Array.from(document.querySelectorAll('.option-single'));
+        courseList.map(course => {
+          course.childNodes[0].classList.remove('selected');
+        });
+        courseList[courseList.length - 1].childNodes[0].classList.add('selected');
       }
     }
 
@@ -192,13 +239,74 @@ class App extends Component {
     }
 
     handleFinishRoundClick = () => {
+      this.checkFinishGame();
       this.setState({
         newGame: false, // To Start Game
         playersPicked: false, // To Display Player Screen
         coursePicked: false, // To Display Course Screen
         gameStarted: false,
-        playersPlaying: [], // Stores Players Names to show on scorecard 
-      })
+        playersPlaying: [] // Stores Players Names to show on scorecard 
+      });
+    }
+
+    checkFinishGame = () => {
+      let gameFinished = false;
+      for(let i = 0; i < this.state.currentGame.players.length; i++) {
+        if(this.state.currentGame.players[i].score.length === this.state.currentGame.par.length) {
+          gameFinished = true;
+          console.log(this.state.savedPlayers);
+          console.log(this.state.currentGame);
+        }
+      }
+      if(gameFinished) { this.saveStats(); }
+    }
+
+    saveStats = () => {
+      let savedPlayersCopy = [...this.state.savedPlayers];
+      console.log('saving stats');
+      for(let i = 0; i < this.state.currentGame.players.length; i++) { // Loop through current game players
+        console.log('looping game players');
+        for(let x = 0; x < this.state.savedPlayers.length; x++) { // Loop through saved players
+          console.log('looping saved players');
+          if(this.state.savedPlayers[x].playerName === this.state.currentGame.players[i].name) { // if names match
+            console.log('names match!');
+            if(this.state.savedPlayers[x].prevRounds.length === 0) {
+                console.log('no previous rounds');
+                savedPlayersCopy[x].prevRounds.push(
+                  {
+                    courseName: this.state.currentGame.course,
+                    scores: [[...this.state.currentGame.players[i].score]]
+                  }
+                );
+                this.setState({savedPlayersCopy}, () => {
+                  localStorage.setItem('savedPlayers', JSON.stringify(this.state.savedPlayers));                  
+                });
+            } else {
+                for(let j = 0; j < this.state.savedPlayers[x].prevRounds.length; j++) { // Loop through saved players previous rounds
+                  console.log(this.state.savedPlayers[x]);
+                  if(this.state.savedPlayers[x].prevRounds[j].courseName.toLowerCase() === this.state.currentGame.course.toLowerCase()) {
+                    console.log('course match found');
+                    savedPlayersCopy[x].prevRounds[j].scores.push(this.state.currentGame.players[i].score);
+                    this.setState({savedPlayersCopy}, () => {
+                      localStorage.setItem('savedPlayers', JSON.stringify(this.state.savedPlayers));                  
+                    });                
+                  } else {
+                    console.log('new course added');
+                    savedPlayersCopy[x].prevRounds.push(
+                      {
+                        courseName: this.state.currentGame.course,
+                        scores: [[...this.state.currentGame.players[i].score]]
+                      }
+                    );
+                    this.setState({savedPlayersCopy}, () => {
+                      localStorage.setItem('savedPlayers', JSON.stringify(this.state.savedPlayers));                  
+                    });
+                  }
+                }
+              }
+          }
+        }
+      }
     }
 
   render() {

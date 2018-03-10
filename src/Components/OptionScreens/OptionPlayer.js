@@ -39,7 +39,7 @@ export default class OptionPlayer extends Component {
             return (
             <div className="option-single" key={index} onClick={this.props.selectOptions}>
               <div className="option-select"></div>
-              <div className="option-name">{player}</div>
+              <div className="option-name">{player.playerName}</div>
               {/* <div className="option-remove" onClick={this.handlePlayerRemove}><img src={trash} alt="Remove Player" /></div> */}
             </div>
             )
@@ -57,7 +57,7 @@ export default class OptionPlayer extends Component {
         <div className="option-wrapper empty-wrapper">
           <img src={emptyPlayers} alt="No Players Here" />
           <h1>Who’s playing?</h1>
-          <p>Players that you’ve added will appear here. Give it a try.</p>
+          <p>Players that you’ve added will appear here. Try adding yourself.</p>
         </div>
         <div className="btn-wrapper">
           <div className="option-btn disabled-btn">Choose Course</div>
