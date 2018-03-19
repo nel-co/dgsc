@@ -5,13 +5,15 @@ import Carousel from 'nuka-carousel';
 import HoleCard from './HoleCard/HoleCard';
 import ScoreBoard from '../ScoreBoard/ScoreBoard';
 import Measure from '../Measure/Measure';
+import NoteScreen from '../NoteScreen/NoteScreen';
 
 export default class HoleScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isScoreBoardOpen: false,
-      isMeasuringThrow: false
+      isMeasuringThrow: false,
+      isNotesOpen: false
     }
   }
 
@@ -69,6 +71,21 @@ export default class HoleScreen extends Component {
       }, 0);
   }
 
+  toggleNotes = () => {
+    this.setState({
+      isMeasuringThrow: false,
+      isScoreBoardOpen: false,
+      isNotesOpen: !this.state.isNotesOpen
+    });
+    if(document.querySelector('.slider')) {    
+      document.querySelector('.hole-carouel').classList.toggle('hidden');
+      console.log('toggled')
+    }
+    setTimeout(() => {
+      this.adjustSlideHeight();
+      }, 0);
+  }
+
   handleScoreBoardMeausureButton = () => {
     this.toggleScoreBoard();
     this.toggleMeasure();
@@ -109,7 +126,7 @@ export default class HoleScreen extends Component {
   render() {
     const HoleScoreCarousel = (
       <div className="option-screen hole-carouel">
-        <h1>{this.props.currentGame.course}</h1>
+        <div className="course-name" onClick={this.toggleNotes}><h1>{this.props.currentGame.course}</h1>{this.props.currentGame.notes.length > 0 ? <span></span> : <span className="empty-note-span"></span>}</div>
         <span className="finish-round-btn" onClick={this.props.handleFinishRoundClick}>Finish Round</span>
         <div className="option-wrapper hole-wrapper">
             <Carousel ref="slider" decorators={[]} afterSlide={this.handleSlideChange}>
@@ -135,6 +152,7 @@ export default class HoleScreen extends Component {
     return (
       <span>
         {HoleScoreCarousel}
+        {this.state.isNotesOpen && !this.state.isScoreBoardOpen && !this.state.isMeasuringThrow ? <NoteScreen currentGame={this.props.currentGame} addNote={this.props.addNote} removeNote={this.props.removeNote} toggleNotes={this.toggleNotes} /> : null}        
         {this.state.isScoreBoardOpen && !this.state.isMeasuringThrow ? <ScoreBoard handleRunningTotal={this.handleRunningTotal} currentGame={this.props.currentGame} toggleScoreBoard={this.toggleScoreBoard} handleScoreBoardMeausureButton={this.handleScoreBoardMeausureButton} /> : null}
         {!this.state.isScoreBoardOpen && this.state.isMeasuringThrow ? <Measure currentGame={this.props.currentGame} toggleMeasure={this.toggleMeasure}/> : null}
       </span>

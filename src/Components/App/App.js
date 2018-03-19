@@ -4,6 +4,7 @@ import './App.css';
 import WelcomeScreen from '../Welcome_Screen/WelcomeScreen';
 import OptionScreen from '../OptionScreens/OptionScreen';
 import HoleScreen from '../HoleScreen/HoleScreen';
+import Stats from '../StatScreen/Stats';
 
 class App extends Component {
 
@@ -62,6 +63,18 @@ class App extends Component {
     })
   }
 
+  handlePlayerScreenBack = () => {
+    this.setState({
+      newGame: false
+    })
+  }
+
+  handleCourseScreenBack = () => {
+    this.setState({
+      playersPicked: false
+    })
+  }
+
   // Toggles the New Player Modal Open/Close 
   toggleNewPlayerModal = () => {
     this.setState({
@@ -79,7 +92,7 @@ class App extends Component {
   // Stores New Player from User Input into savedPlayers State and Updates Local Storage
   saveNewPlayer = () => {
     const playerInput = document.querySelector('input[name="new-player-name"]');
-    if(playerInput.value.length > 0) {
+    if(playerInput.value.length > 0 && playerInput.value.length <= 35) {
       let newPlayer = {};
       newPlayer.playerName = playerInput.value.trim();
       newPlayer.prevRounds = [];
@@ -134,17 +147,33 @@ class App extends Component {
     }
   }
 
+  removePlayer = (index) => {
+    let question = window.confirm('Are you sure you want to remove this player?');
+    if(question) {
+      let savedPlayersCopy = [...this.state.savedPlayers];
+      savedPlayersCopy.splice(index, 1);
+      this.setState({
+        savedPlayers: savedPlayersCopy
+      }, () => {
+        localStorage.setItem('savedPlayers', JSON.stringify(this.state.savedPlayers));    
+       });
+    } else {
+      return;
+    }
+  }
+
     // Stores New Course from User Input into savedCourses State and Updates Local Storage
     saveNewCourse = () => {
       const courseNameInput = document.querySelector('input[name="new-course-name"]');
       const courseHoleInput = document.querySelector('input[name="new-course-holes"]');
       const courseLength = parseInt(courseHoleInput.value)
-      if(courseNameInput.value.length > 0 && courseHoleInput.value > 0) {
+      if(courseNameInput.value.length > 0 && courseHoleInput.value > 0 && courseHoleInput.value <= 27) {
         const courseName = courseNameInput.value.trim();
         let newCourseData = {
           courseName: courseName,
           holes: courseLength,
-          par: new Array(courseLength).fill(3)
+          par: new Array(courseLength).fill(3),
+          notes: []
         }
         this.setState({
           savedCourses: [...this.state.savedCourses, newCourseData],
@@ -186,6 +215,7 @@ class App extends Component {
             currentGameCopy.players = this.state.playersPlaying;            
             currentGameCopy.course = this.state.savedCourses[x].courseName;
             currentGameCopy.holes = this.state.savedCourses[x].holes;
+            currentGameCopy.notes = this.state.savedCourses[x].notes;
             if(this.state.savedCourses[x].par.length > 0) {
               currentGameCopy.par = this.state.savedCourses[x].par;              
             } else {
@@ -202,6 +232,21 @@ class App extends Component {
             break;
           }
         }
+      }
+    }
+
+    removeCourse = (index) => {
+      let question = window.confirm('Are you sure you want to remove this course?');
+      if(question) {
+        let savedCoursesCopy = [...this.state.savedCourses];
+        savedCoursesCopy.splice(index, 1);
+        this.setState({
+          savedCourses: savedCoursesCopy
+        }, () => {
+          localStorage.setItem('savedCourses', JSON.stringify(this.state.savedCourses));
+         });
+      } else {
+        return;
       }
     }
 
@@ -238,8 +283,65 @@ class App extends Component {
       }
     }
 
+    addNote = (courseName) => {
+      let savedCoursesCopy = [...this.state.savedCourses];      
+      for(let i = 0; i < this.state.savedCourses.length; i++) {
+        if(courseName === this.state.savedCourses[i].courseName) {
+          let note = document.querySelector('textarea[name="note-text"]');
+          if(note !== '') {
+            savedCoursesCopy[i].notes.push(note.value);
+            this.setState({
+              savedCourses: savedCoursesCopy
+            }, () => {
+              localStorage.setItem('savedCourses', JSON.stringify(this.state.savedCourses));              
+            })
+            note.value = '';
+          }
+          note.blur();
+        }
+      }
+    }
+
+    removeNote = (courseName, index) => {
+      console.log(index);
+      let savedCoursesCopy = [...this.state.savedCourses];
+      for(let i = 0; i < this.state.savedCourses.length; i++) {
+        if(courseName === this.state.savedCourses[i].courseName) {
+          savedCoursesCopy[i].notes.splice(index, 1);
+          this.setState({
+            savedCoursesCopy
+          }, () => {
+            localStorage.setItem('savedCourses', JSON.stringify(this.state.savedCourses));
+           });
+        }
+      }
+    }
+
     handleFinishRoundClick = () => {
       this.checkFinishGame();
+    }
+
+    checkFinishGame = () => {
+      let gameFinished = false;
+      for(let i = 0; i < this.state.currentGame.players.length; i++) {
+        if(this.state.currentGame.players[i].score.length === this.state.currentGame.par.length) {
+          gameFinished = true;
+        }
+      }
+      if(gameFinished) { 
+        this.saveStats();
+        this.resetGame();
+      } else {
+        let question = window.confirm("Game stats won't save unless the round is finished. Are you sure you want to stop now?");
+        if(question) {
+          this.resetGame();
+        } else {
+          return;
+        }
+      }
+    }
+
+    resetGame = () => {
       this.setState({
         newGame: false, // To Start Game
         playersPicked: false, // To Display Player Screen
@@ -249,64 +351,28 @@ class App extends Component {
       });
     }
 
-    checkFinishGame = () => {
-      let gameFinished = false;
-      for(let i = 0; i < this.state.currentGame.players.length; i++) {
-        if(this.state.currentGame.players[i].score.length === this.state.currentGame.par.length) {
-          gameFinished = true;
-          console.log(this.state.savedPlayers);
-          console.log(this.state.currentGame);
-        }
-      }
-      if(gameFinished) { this.saveStats(); }
-    }
-
     saveStats = () => {
       let savedPlayersCopy = [...this.state.savedPlayers];
-      console.log('saving stats');
-      for(let i = 0; i < this.state.currentGame.players.length; i++) { // Loop through current game players
-        console.log('looping game players');
-        for(let x = 0; x < this.state.savedPlayers.length; x++) { // Loop through saved players
-          console.log('looping saved players');
-          if(this.state.savedPlayers[x].playerName === this.state.currentGame.players[i].name) { // if names match
+      const currentGame = this.state.currentGame;
+      for(let i = 0; i < currentGame.players.length; i++) {
+        console.log('looping current game players');
+        for(let j = 0; j < savedPlayersCopy.length; j++) {
+          console.log('looping saved players');          
+          if(currentGame.players[i].name === savedPlayersCopy[j].playerName) {
             console.log('names match!');
-            if(this.state.savedPlayers[x].prevRounds.length === 0) {
-                console.log('no previous rounds');
-                savedPlayersCopy[x].prevRounds.push(
-                  {
-                    courseName: this.state.currentGame.course,
-                    scores: [[...this.state.currentGame.players[i].score]]
-                  }
-                );
-                this.setState({savedPlayersCopy}, () => {
-                  localStorage.setItem('savedPlayers', JSON.stringify(this.state.savedPlayers));                  
-                });
-            } else {
-                for(let j = 0; j < this.state.savedPlayers[x].prevRounds.length; j++) { // Loop through saved players previous rounds
-                  console.log(this.state.savedPlayers[x]);
-                  if(this.state.savedPlayers[x].prevRounds[j].courseName.toLowerCase() === this.state.currentGame.course.toLowerCase()) {
-                    console.log('course match found');
-                    savedPlayersCopy[x].prevRounds[j].scores.push(this.state.currentGame.players[i].score);
-                    this.setState({savedPlayersCopy}, () => {
-                      localStorage.setItem('savedPlayers', JSON.stringify(this.state.savedPlayers));                  
-                    });                
-                  } else {
-                    console.log('new course added');
-                    savedPlayersCopy[x].prevRounds.push(
-                      {
-                        courseName: this.state.currentGame.course,
-                        scores: [[...this.state.currentGame.players[i].score]]
-                      }
-                    );
-                    this.setState({savedPlayersCopy}, () => {
-                      localStorage.setItem('savedPlayers', JSON.stringify(this.state.savedPlayers));                  
-                    });
-                  }
-                }
-              }
+            let scoreArray = currentGame.players[i].score
+            savedPlayersCopy[j].prevRounds.push({
+              courseName: currentGame.course,
+              scores: scoreArray
+            });
+            console.log(savedPlayersCopy);
+            this.setState({savedPlayersCopy}, () => {
+              localStorage.setItem('savedPlayers', JSON.stringify(this.state.savedPlayers));                  
+            });
           }
         }
       }
+
     }
 
   render() {
@@ -320,21 +386,28 @@ class App extends Component {
       coursePicked: this.state.coursePicked,
       currentGame: this.state.currentGame,
 
-      handleNewGame: this.handleNewGame,      
+      handleNewGame: this.handleNewGame,
+      handlePlayerScreenBack: this.handlePlayerScreenBack,
+      handleCourseScreenBack: this.handleCourseScreenBack,
       toggleNewPlayerModal: this.toggleNewPlayerModal,
       toggleNewCourseModal: this.toggleNewCourseModal,
       saveNewPlayer: this.saveNewPlayer,
       savePlayersPicked: this.savePlayersPicked,
+      removePlayer: this.removePlayer,
       saveNewCourse: this.saveNewCourse,
       saveCoursePicked: this.saveCoursePicked,
+      removeCourse: this.removeCourse,
       handleParChange: this.handleParChange,
       handlePlayerScore: this.handlePlayerScore,
       handleFinishRoundClick: this.handleFinishRoundClick,
+      addNote: this.addNote,
+      removeNote: this.removeNote
     };
     return (
       <div className="App">
-        { !this.state.newGame ? <WelcomeScreen {...props} /> : <OptionScreen {...props} /> }
-        { this.state.gameStarted ? <HoleScreen {...props} /> : null }
+        <Stats savedPlayers={this.state.savedPlayers} savedCourses={this.state.savedCourses} />
+        {/* { !this.state.newGame ? <WelcomeScreen {...props} /> : <OptionScreen {...props} /> } */}
+        {/* { this.state.gameStarted ? <HoleScreen {...props} /> : null } */}
       </div>
     );
   }

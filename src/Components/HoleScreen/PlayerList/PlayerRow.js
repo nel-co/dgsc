@@ -59,21 +59,26 @@ export default class PlayerRow extends Component {
   }
 
   getAvg = (playerScores, holeIndex) => {
-    let par = this.props.currentGame.par;
     let courseName = this.props.currentGame.course;
-    let scores;
+    let scores = [];
     let gamesPlayed;
     let sum = 0;
 
-    for(let i = 0; i < playerScores.length; i++) {
-      if(courseName === playerScores[i].courseName) { // if course match is found
-        scores = playerScores[i].scores;              // set scores to found scores
-        gamesPlayed = scores.length;                  // set games played to length of scores
+    let prevRoundScores = playerScores.filter( round => {
+      return round.courseName === this.props.currentGame.course;
+    });
+    
+
+    for(let i = 0; i < prevRoundScores.length; i++) {
+      if(courseName === prevRoundScores[i].courseName) { // if course match is found
+        scores = scores.concat([prevRoundScores[i].scores]);              // set scores to found scores
+        gamesPlayed = prevRoundScores.length;                  // set games played to length of scores
       } else {
         scores = false;
         gamesPlayed = 0;
       }
     }
+    console.log(scores)
 
     if(scores && gamesPlayed > 0) {
       for(let x = 0; x < scores.length; x++) {
@@ -87,14 +92,17 @@ export default class PlayerRow extends Component {
   }
 
   getBest = (playerScores, holeIndex) => {
-    let par = this.props.currentGame.par;
     let courseName = this.props.currentGame.course;
-    let scores;
+    let scores = [];
     let best;
 
-    for(let i = 0; i < playerScores.length; i++) {
-      if(courseName === playerScores[i].courseName) {
-        scores = playerScores[i].scores;
+    let prevRoundScores = playerScores.filter( round => {
+      return round.courseName === this.props.currentGame.course;
+    });
+
+    for(let i = 0; i < prevRoundScores.length; i++) {
+      if(courseName === prevRoundScores[i].courseName) {
+        scores = scores.concat([prevRoundScores[i].scores]); 
       } else {
         scores = false;
       }

@@ -45,14 +45,17 @@ export default class OptionScreen extends Component {
       savedCourses: this.props.savedCourses,
       addingNewCourse: this.props.addingNewCourse,
 
-      handleNewGame: this.props.handleNewGame,      
+      handleNewGame: this.props.handleNewGame,
+      handlePlayerScreenBack: this.props.handlePlayerScreenBack,
+      handleCourseScreenBack: this.props.handleCourseScreenBack,
       toggleNewPlayerModal: this.props.toggleNewPlayerModal,
       toggleNewCourseModal: this.props.toggleNewCourseModal,
       saveNewPlayer: this.props.saveNewPlayer,
       savePlayersPicked: this.props.savePlayersPicked,
+      removePlayer: this.props.removePlayer,
       saveNewCourse: this.props.saveNewCourse,
       saveCoursePicked: this.props.saveCoursePicked,
-
+      removeCourse: this.props.removeCourse,
       selectOptions: this.selectOptions
     };
 

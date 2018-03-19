@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './WelcomeScreen.css';
 
-import logo from './logo.png';
+import logo from './logo-green.png';
 
 export default class WelcomeScreen extends Component {
   render() {
