@@ -37,7 +37,7 @@
   margin-top: 15px;
   overflow-x: hidden;
   overflow-y: auto;
-  flex: 0 1 66%;
+  flex: 0 1 65%;
 }
 
 @media screen and (min-height: 732px ) {

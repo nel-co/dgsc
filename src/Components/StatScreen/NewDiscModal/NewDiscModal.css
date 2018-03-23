@@ -1,0 +1,11 @@
+#disc-type-select {
+  width: 100%;
+  margin-bottom: 15px;
+  font-family: 'Dosis', sans-serif;
+  border-color: var(--primary-color);
+  padding: 5px 0px;
+  text-align: center;
+  font-weight: 700;
+  outline: none;
+  background: #fff;
+}

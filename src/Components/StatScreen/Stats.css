@@ -1,3 +1,7 @@
+/* * {
+  border: 1px solid red !important;
+} */
+
 .stat-wrapper {
   margin-top: 15px;
 }
@@ -6,8 +10,8 @@
   /* display: flex;
   justify-content: space-between;  */
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 2px;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 7px;
   margin-bottom: 7px;  
 }
 
@@ -26,18 +30,20 @@
   border-top: 4px solid var(--primary-green);
 }
 
+.stat-block:nth-of-type(2) {
+  border-top: 4px solid var(--primary-blue);  
+}
+
 .stat-block:nth-of-type(3) {
   border-top: 4px solid var(--primary-red);
 }
 
-.stat-block:nth-of-type(2) {
-  margin-right: 5px;  
-  margin-left: 5px;
-  border-top: 4px solid var(--primary-blue);  
+.stat-block:nth-of-type(4) {
+  border-top: 4px solid #757575;
 }
 
 .stat-block span:nth-of-type(1) {
-  color: #a2a2a2;
+  color: #757575;
   font-size: 1.4em;
   font-weight: 700;
   padding-bottom: 5px;
@@ -45,6 +51,10 @@
 
 .stat-block span:nth-of-type(2) {
   font-size: 5em;
+  font-weight: 700;
+}
+.stat-block span:nth-of-type(3) {
+  font-size: 1.2em;
   font-weight: 700;
 }
 
@@ -59,12 +69,75 @@
 }
 
 .stat-block__horizontal span:nth-of-type(1) {
-  color: #a2a2a2;
-  font-size: 1.4em;
+  color: #757575;
+  font-size: 1.2em;
   font-weight: 700;
 }
 
 .stat-block__horizontal span:nth-of-type(2) {
   font-size: 1.4em;
   font-weight: 700;
+}
+
+.stat-block__table {
+  display: flex;
+  flex-direction: column;
+  padding: 0px;
+  border: 1px solid #a2a2a2;
+  border-radius: 5px;
+  margin-bottom: 7px;  
+}
+
+.stat-block__table div:first-of-type {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.2em;
+  font-weight: 700;
+  color: #757575;
+}
+
+.stat-block-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.4em;
+  font-weight: 700;
+  padding: 20px 20px;
+  border-bottom: 1px solid #a2a2a2;
+}
+
+.stat-block-row:last-of-type {
+  border: none;
+}
+
+.row-disc-info {
+  color: var(--primary-color) !important;
+}
+
+.add-disc-btn,
+.disc-remove {
+  cursor: pointer;
+}
+
+.disc-badge {
+  margin-left: 10px;
+  font-size: .6em;
+  font-weight: 700;
+  padding: 2px 12px;
+  border-radius: 15px;
+}
+
+.disc-p {
+  background: var(--primary-blue);
+  color: #357475;
+}
+
+.disc-m {
+  background: var(--primary-green);
+  color: #295c33;
+}
+
+.disc-d {
+  background: var(--primary-color);
+  color: #ffffff;
 }

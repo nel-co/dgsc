@@ -78,7 +78,6 @@ export default class PlayerRow extends Component {
         gamesPlayed = 0;
       }
     }
-    console.log(scores)
 
     if(scores && gamesPlayed > 0) {
       for(let x = 0; x < scores.length; x++) {
@@ -112,7 +111,7 @@ export default class PlayerRow extends Component {
         return score[holeIndex];
       });
       best = Math.min(...holeArr)
-      return 'Best: '+ best;
+      return best === !Infinity ? ('Best: '+ best) : null;
     } else {
       return;       
     }

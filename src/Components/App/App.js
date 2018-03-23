@@ -12,13 +12,18 @@ class App extends Component {
     super(props);
     this.state = {
       newGame: false, // To Start Game
+      isViewingStats: false,
       addingNewPlayer: false, // To Toggle Player Modal
       addingNewCourse: false, // To Toggle Course Modal
       playersPicked: false, // To Display Player Screen
       coursePicked: false, // To Display Course Screen
       gameStarted: false,
+      bestScore: JSON.parse(localStorage.getItem('bestScore')) || {
+        course: '',
+        total: 0
+      },
       playersPlaying: [], // Stores Players Names to show on scorecard
-      // savedPlayers: JSON.parse(localStorage.getItem('savedPlayers')) || [], //Saves players names 
+      savedPlayers: JSON.parse(localStorage.getItem('savedPlayers')) || [], //Saves players names 
       savedCourses: JSON.parse(localStorage.getItem('savedCourses')) || [], // Saves course info
       currentGame: {
         courseName: '',
@@ -27,32 +32,10 @@ class App extends Component {
         players: [
           {
             name: '',
-            score: [] // push score after each slide
+            score: []
           }
         ]
-      },
-      savedPlayers: JSON.parse(localStorage.getItem('savedPlayers')) || [
-        // {
-        //   playerName: 'Nelson',
-        //   prevRounds: [
-        //     {
-        //       courseName: 'Shoally',
-        //       scores: [
-        //         [3,2,2,2,3,3,2,3],
-        //         [2,2,3,3,3,4,2,3],
-        //         [3,3,3,3,4,3,2,3]
-        //       ]
-        //     },
-        //     {
-        //      courseName: 'upstate',
-        //      scores: [
-        //        [3,2,2,2,3,3,2,3],
-        //        [3,2,3,3,3,4,2,3]
-        //      ]
-        //    },
-        //   ]
-        // }
-      ]
+      }
     }
   }
   
@@ -61,6 +44,14 @@ class App extends Component {
     this.setState({
       newGame: true
     })
+  }
+
+  handleStatClick = () => {
+    if(this.state.savedPlayers[0].prevRounds.length > 0) {
+      this.setState({
+        isViewingStats: !this.state.isViewingStats
+      })
+    }
   }
 
   handlePlayerScreenBack = () => {
@@ -363,7 +354,8 @@ class App extends Component {
             let scoreArray = currentGame.players[i].score
             savedPlayersCopy[j].prevRounds.push({
               courseName: currentGame.course,
-              scores: scoreArray
+              scores: scoreArray,
+              par: currentGame.par
             });
             console.log(savedPlayersCopy);
             this.setState({savedPlayersCopy}, () => {
@@ -372,12 +364,32 @@ class App extends Component {
           }
         }
       }
+      this.findBestScore(currentGame.course);
+    }
 
+    findBestScore = (courseName) => {
+      let bestScore = this.state.bestScore;
+      bestScore.course = courseName;
+      
+      let playerTotal = this.state.currentGame.players[0].score.reduce((a,b) => a + b);
+      let par = this.state.currentGame.par.reduce((a,b) => a + b);
+      if((playerTotal - par) < bestScore.total) {
+        bestScore.total = playerTotal - par;
+      } else {
+        bestScore = bestScore;
+      }
+      this.setState({
+        bestScore: bestScore
+      }, () => {
+        localStorage.setItem('bestScore', JSON.stringify(this.state.bestScore));
+        console.log(bestScore)           
+      })
     }
 
   render() {
     const props = {
       newGame: this.state.newGame,
+      isViewingStats: this.state.isViewingStats,
       addingNewPlayer: this.state.addingNewPlayer,
       savedPlayers: this.state.savedPlayers,
       playersPicked: this.state.playersPicked,
@@ -385,8 +397,10 @@ class App extends Component {
       addingNewCourse: this.state.addingNewCourse,
       coursePicked: this.state.coursePicked,
       currentGame: this.state.currentGame,
+      bestScore: this.state.bestScore,
 
       handleNewGame: this.handleNewGame,
+      handleStatClick: this.handleStatClick,
       handlePlayerScreenBack: this.handlePlayerScreenBack,
       handleCourseScreenBack: this.handleCourseScreenBack,
       toggleNewPlayerModal: this.toggleNewPlayerModal,
@@ -405,9 +419,11 @@ class App extends Component {
     };
     return (
       <div className="App">
-        <Stats savedPlayers={this.state.savedPlayers} savedCourses={this.state.savedCourses} />
-        {/* { !this.state.newGame ? <WelcomeScreen {...props} /> : <OptionScreen {...props} /> } */}
-        {/* { this.state.gameStarted ? <HoleScreen {...props} /> : null } */}
+       {/* dont render stats until new player is added */}
+        { !this.state.newGame &&  !this.state.isViewingStats ? <WelcomeScreen {...props} /> : null }
+        { this.state.isViewingStats ? <Stats savedPlayers={this.state.savedPlayers} savedCourses={this.state.savedCourses} bestScore={this.state.bestScore} handleStatClick={this.handleStatClick} />: null }        
+        { this.state.newGame ? <OptionScreen {...props} /> : null }
+        { this.state.gameStarted ? <HoleScreen {...props} /> : null }
       </div>
     );
   }

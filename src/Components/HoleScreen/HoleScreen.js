@@ -22,6 +22,16 @@ export default class HoleScreen extends Component {
     this.adjustSlideHeight();
     this.setPlayerRowHeight();    
     }, 0);
+    window.history.pushState({ page: 1 }, "", "");
+    window.onpopstate = function (event) {
+      let question = window.alert('Game Progress will be lost!');
+      if (event && question ) {
+        // Code to handle back button or prevent from navigation
+      }
+      else {
+        // Continue user action through link or button
+      }
+    }
   }
   
   handleRunningTotal = (playerIndex) => {

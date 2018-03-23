@@ -70,7 +70,8 @@ export default class OptionCourse extends Component {
     let courseScreen;
     const courseList = (
       <div className="option-screen">
-        <h1><img src={backArrow} alt="" onClick={this.props.handleCourseScreenBack} />Choose Course</h1><span className="player-pick-number" onClick={this.handleCourseRemove}>{!this.state.isRemoving ? 'EDIT' : 'DONE'}</span>
+        <h1><img src={backArrow} alt="" onClick={this.props.handleCourseScreenBack} /> Choose Course</h1>
+        <span className="player-pick-number" onClick={this.handleCourseRemove}>{!this.state.isRemoving ? 'EDIT' : 'DONE'}</span>
         <div className="option-wrapper">
           {this.props.savedCourses && this.props.savedCourses.map((course, index) => {
             return (

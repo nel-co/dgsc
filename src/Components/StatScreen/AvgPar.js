@@ -5,18 +5,15 @@ export default class AvgPar extends Component {
   getAvgPar = () => {
     const mainPlayer = this.props.savedPlayers[0];
     let totalPar = 0;
-    let coursesPlayed = 0;
+    let roundsPlayed = mainPlayer.prevRounds.length;
+    let allScores = [];
+
     for(let i = 0; i < mainPlayer.prevRounds.length; i++) {
-      for(let x = 0; x < this.props.savedCourses.length; x++) {
-        if(mainPlayer.prevRounds[i].courseName === this.props.savedCourses[x].courseName) {
-          coursesPlayed++;
-          totalPar += this.props.savedCourses[x].par.reduce((a,b) => {
-            return a + b;
-          })
-        }
+      for(let x = 0; x < mainPlayer.prevRounds[i].par.length; x++) {
+        totalPar += mainPlayer.prevRounds[i].par[x];
       }
     }
-    return totalPar ? Math.round(totalPar / coursesPlayed) : 0;
+    return totalPar ? Math.round(totalPar / roundsPlayed) : 0;
   }
 
   render() {
