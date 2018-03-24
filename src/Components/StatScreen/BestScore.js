@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 export default class FavoriteHole extends Component {
   checkBestScoreExists = () => {
     if(this.props.bestScore.course !== undefined) {
-      return `${this.props.bestScore.total}`
+      return this.props.bestScore.total === 0 ? 'e': `${this.props.bestScore.total}`;
     } else {
       return 'N/A'
     }
@@ -13,7 +13,7 @@ export default class FavoriteHole extends Component {
     if(this.props.bestScore.course !== undefined) {
       return `${this.props.bestScore.course}`
     } else {
-      return 'N/A'
+      return
     }
   }
 

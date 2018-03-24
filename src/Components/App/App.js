@@ -218,7 +218,7 @@ class App extends Component {
               coursePicked: true,
               gameStarted: true
             }, () => {
-              console.log(this.state.currentGame)
+              // console.log(this.state.currentGame)
             })
             break;
           }
@@ -262,10 +262,7 @@ class App extends Component {
 
     handlePlayerScore = (playerScore, holeIndex, playerIndex) => {
       let currentGameCopy = Object.assign({}, this.state.currentGame); // Copy of current game object
-      if(currentGameCopy.players[playerIndex].score.length === 0) {
-        currentGameCopy.players[playerIndex].score.push(playerScore);
-        this.setState({currentGameCopy});
-      } else if(currentGameCopy.players[playerIndex].score[holeIndex]) {
+      if(currentGameCopy.players[playerIndex].score[holeIndex]) {
         currentGameCopy.players[playerIndex].score[holeIndex] = playerScore;
         this.setState({currentGameCopy});
       } else {
@@ -317,6 +314,9 @@ class App extends Component {
       for(let i = 0; i < this.state.currentGame.players.length; i++) {
         if(this.state.currentGame.players[i].score.length === this.state.currentGame.par.length) {
           gameFinished = true;
+        } else if(this.state.currentGame.players[i].score.length === this.state.currentGame.par.length - 1) {
+          this.handlePlayerScore(this.state.currentGame.par[i], this.state.currentGame.par.length - 1, i);
+          gameFinished = true;
         }
       }
       if(gameFinished) { 
@@ -346,18 +346,18 @@ class App extends Component {
       let savedPlayersCopy = [...this.state.savedPlayers];
       const currentGame = this.state.currentGame;
       for(let i = 0; i < currentGame.players.length; i++) {
-        console.log('looping current game players');
+        // console.log('looping current game players');
         for(let j = 0; j < savedPlayersCopy.length; j++) {
-          console.log('looping saved players');          
+          // console.log('looping saved players');          
           if(currentGame.players[i].name === savedPlayersCopy[j].playerName) {
-            console.log('names match!');
+            // console.log('names match!');
             let scoreArray = currentGame.players[i].score
             savedPlayersCopy[j].prevRounds.push({
               courseName: currentGame.course,
               scores: scoreArray,
               par: currentGame.par
             });
-            console.log(savedPlayersCopy);
+            // console.log(savedPlayersCopy);
             this.setState({savedPlayersCopy}, () => {
               localStorage.setItem('savedPlayers', JSON.stringify(this.state.savedPlayers));                  
             });
@@ -382,7 +382,6 @@ class App extends Component {
         bestScore: bestScore
       }, () => {
         localStorage.setItem('bestScore', JSON.stringify(this.state.bestScore));
-        console.log(bestScore)           
       })
     }
 

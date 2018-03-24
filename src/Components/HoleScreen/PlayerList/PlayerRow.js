@@ -110,10 +110,14 @@ export default class PlayerRow extends Component {
       let holeArr = scores.map(score => {
         return score[holeIndex];
       });
-      best = Math.min(...holeArr)
-      return best === !Infinity ? ('Best: '+ best) : null;
+      best = Math.min(...holeArr);
+      if(best !== Infinity) {
+        return 'Best: '+ best;
+      } else {
+        return null;
+      }
     } else {
-      return;       
+      return;   
     }
   }
 

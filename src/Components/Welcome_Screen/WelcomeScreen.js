@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './WelcomeScreen.css';
 
-import logo from './logo-green.png';
+import logo from './logo-main.svg';
 
 export default class WelcomeScreen extends Component {
   render() {
@@ -16,10 +16,9 @@ export default class WelcomeScreen extends Component {
       <div className="welcome-screen">
         <div className="welcome-wrapper">
           <img src={logo} alt="disc golf logo" />
-          <h1>DG ScoreKeeper</h1>
+          <h1>DiscGolfScoreBoard</h1>
           <p>Start a new round to track your score and measure the distance of your throws.</p>
-          <div className="welcome-btn" onClick={this.props.handleNewGame}>New Game</div>
-          {/* <div className="welcome-btn" onClick={this.props.handleStatClick}>My Stats</div> */}
+          <div className="welcome-btn" onClick={this.props.handleNewGame}>New Round</div>
           {statButton()}
         </div>
       </div>

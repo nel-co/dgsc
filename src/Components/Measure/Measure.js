@@ -111,8 +111,8 @@ export default class Measure extends Component {
           {/* <h1>{!this.state.finalDistance ? '0ft' : `${this.state.finalDistance}ft`}</h1> */}
           {this.RenderLoadingAnim()}
           <p>To finish the measurement, walk to where your disc rests and tap stop.</p>
-          <p className="small-font">{`initial coords: ${this.state.startingLat}, ${this.state.startingLon}`}</p>
-          <p className="small-font">{`ending coords: ${this.state.endingLat}, ${this.state.endingLon}`}</p>
+          {/* <p className="small-font">{`initial coords: ${this.state.startingLat}, ${this.state.startingLon}`}</p> */}
+          {/* <p className="small-font">{`ending coords: ${this.state.endingLat}, ${this.state.endingLon}`}</p> */}
           <span>Measurement subject to GPS signal. +/- 30ft</span>          
         </div>
         <div className="btn-wrapper">
